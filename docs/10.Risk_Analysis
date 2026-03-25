@@ -1,0 +1,47 @@
+# Payment Process Flow
+
+##  Current Flow (AS-IS)
+
+User → Checkout → Payment Attempt → Failure → Order Blocked → No Retry → Manual Resolution
+
+---
+
+##  Improved Flow (TO-BE)
+
+User → Checkout → Payment Attempt →
+→ If Success → Order Confirmed
+→ If Failure →
+
+* Check failure type
+* If recoverable → Retry allowed
+* If non-recoverable → Show error
+  → Order released if failed
+
+---
+
+##  Improvement
+
+* Reduced order blocking
+* Better user experience
+* Automated handling of failures
+
+# Risk Analysis
+
+## Risk Formula
+
+Risk Score = Probability × Impact
+
+---
+
+## Example
+
+Failure Retry Risk
+= High Probability × Medium Impact
+
+---
+
+## Mitigation
+
+* Retry limit
+* Error classification
+
