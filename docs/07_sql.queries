@@ -1,0 +1,154 @@
+-- =========================================
+-- SQL ANALYSIS FOR PAYMENT SYSTEM CASE STUDY
+-- =========================================
+
+-- 1. Identify total successful vs failed transactions
+SELECT payment_status, COUNT(*) AS total_count
+FROM payments
+GROUP BY payment_status;
+
+-- 2. Identify failure reasons
+SELECT failure_reason, COUNT(*) AS failure_count
+FROM payments
+WHERE payment_status = 'FAILED'
+GROUP BY failure_reason;
+
+-- 3. Analyze retry attempts
+SELECT retry_flag, COUNT(*) AS retry_count
+FROM payments
+GROUP BY retry_flag;
+
+-- 4. Identify transactions with multiple retries
+SELECT transaction_id, COUNT(**) AS attempt_count*
+*FROM payments*
+*GROUP BY transaction_id*
+*HAVING COUNT(*) > 1;
+
+-- 5. Identify orders stuck due to payment failure
+SELECT order_id, payment_status
+FROM payments
+WHERE payment_status = 'FAILED';
+
+-- 6. Detect duplicate transactions
+SELECT transaction_id, COUNT(*) AS duplicate_count*
+*FROM payments*
+*GROUP BY transaction_id*
+*HAVING COUNT(*) > 1;
+
+-- 7. Check missing critical fields
+SELECT *
+FROM payments
+WHERE transaction_id IS NULL
+OR payment_status IS NULL;
+
+-- 8. Reconciliation check (transaction vs settlement)
+SELECT p.transaction_id, p.amount, s.settlement_amount
+FROM payments p
+JOIN settlements s
+ON p.transaction_id = s.transaction_id
+WHERE p.amount != s.settlement_amount;
+
+# SQL Query Explanations
+
+## 1. Successful vs Failed Transactions
+
+**Query Purpose:**
+To understand the distribution of successful and failed transactions.
+
+**Why this is used:**
+Helps identify if failure rate is high and requires investigation.
+
+**Insight:**
+If failed transactions are significantly high, it indicates issues in payment processing or failure handling.
+
+---
+
+## 2. Failure Reasons Analysis
+
+**Query Purpose:**
+To identify the most common reasons for payment failures.
+
+**Why this is used:**
+Helps categorize failures into recoverable (retry possible) and non-recoverable.
+
+**Insight:**
+Enables decision-making for implementing retry logic and improving user messaging.
+
+---
+
+## 3. Retry Attempts Analysis
+
+**Query Purpose:**
+To check how many transactions are retried.
+
+**Why this is used:**
+Evaluates whether retry mechanisms are being used effectively.
+
+**Insight:**
+Low retry count → missed recovery opportunities
+High retry count → possible system misuse or inefficiency
+
+---
+
+## 4. Multiple Retry Transactions
+
+**Query Purpose:**
+To identify transactions attempted multiple times.
+
+**Why this is used:**
+Helps track repeated attempts and user behavior.
+
+**Insight:**
+High retries may indicate poor failure handling or lack of proper feedback to users.
+
+---
+
+## 5. Orders Stuck Due to Failure
+
+**Query Purpose:**
+To identify orders that failed and may be blocked.
+
+**Why this is used:**
+Helps detect inventory blocking issues and operational inefficiencies.
+
+**Insight:**
+Large number of failed orders → negative impact on sellers and revenue.
+
+---
+
+## 6. Duplicate Transactions
+
+**Query Purpose:**
+To detect duplicate transaction records.
+
+**Why this is used:**
+Important for data integrity and avoiding double charging or incorrect reporting.
+
+**Insight:**
+Duplicate transactions indicate system bugs or retry mismanagement.
+
+---
+
+## 7. Missing Critical Fields
+
+**Query Purpose:**
+To identify records with missing important data.
+
+**Why this is used:**
+Ensures data completeness and reliability.
+
+**Insight:**
+Missing transaction_id or payment_status can break reconciliation and reporting.
+
+---
+
+## 8. Reconciliation Check
+
+**Query Purpose:**
+To compare transaction amount with settlement amount.
+
+**Why this is used:**
+Ensures financial accuracy and correct payouts.
+
+**Insight:**
+Mismatch indicates issues in settlement calculation, fees, or processing errors.
