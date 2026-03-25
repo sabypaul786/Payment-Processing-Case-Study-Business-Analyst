@@ -1,0 +1,78 @@
+# Agile Execution & Delivery Model
+
+##  Overview
+
+The project was executed using Agile methodology with iterative delivery, continuous feedback, and close collaboration between business and technology teams.
+
+---
+
+## Sprint Planning
+
+* Requirements were broken into user stories
+* Stories were prioritized based on business impact
+* Sprint duration: 2 weeks
+
+---
+
+##  Sample User Story
+
+**Title:** Improve payment failure handling
+
+**As a** customer
+**I want** clear feedback when payment fails
+**So that** I can retry or choose another method
+
+**Acceptance Criteria:**
+
+* Failure reason should be displayed clearly
+* Retry allowed only for recoverable failures
+* Order should not remain blocked
+
+---
+
+## JIRA / Azure DevOps Usage
+
+* Created Epics for major features (Payment Failure Handling, Reconciliation)
+* Created User Stories under each Epic
+* Linked tasks to development and testing activities
+* Tracked progress using Kanban/Sprint boards
+
+---
+
+##  API Understanding
+
+* Payment system interacts with external payment gateways via APIs
+
+* Request includes:
+
+  * transaction_id
+  * payment_method
+  * amount
+
+* Response includes:
+
+  * status (success/failure)
+  * failure_reason
+  * transaction_reference
+
+---
+
+##  Daily Stand-ups
+
+* Discussed progress, blockers, and next steps
+* Coordinated with developers and QA teams
+
+---
+
+##  UAT Coordination
+
+* Ensured test scenarios aligned with user stories
+* Validated acceptance criteria before release
+
+---
+
+##  Outcome
+
+* Improved collaboration across teams
+* Faster issue resolution
+* Incremental delivery of features
